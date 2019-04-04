@@ -1,10 +1,18 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
+import { Creators } from '../reducers/loginReducer';
 import uuidv4 from 'uuid/v4';
 
-interface IProps {
+interface IEnter {
   authorised: boolean;
+  isloading: boolean;
   id: number;
+}
+
+interface IProps {
+  enter: IEnter;
+  checkData: any;
 };
 
 interface IState {
@@ -25,7 +33,8 @@ class Login extends React.Component<IProps, IState>{
   
   public sendForm = (e: React.FormEvent<HTMLFormElement>):void=> {
     e.preventDefault();
-    console.log(this.state)
+    const { checkData } = this.props
+    checkData();
   }
 
   public handleUserInput = (e: React.FormEvent<HTMLInputElement>):void => {
@@ -36,11 +45,12 @@ class Login extends React.Component<IProps, IState>{
 
   public render() {
     const { email, password } = this.state;
-    const { authorised, id } = this.props;
-    
+    const { authorised, id, isloading} = this.props.enter;
+    console.log(authorised, id, isloading);
     if (authorised) {
       const url = `/patient/${uuidv4()}${id}`;
-      return <Redirect from="/login" to=''></Redirect>
+      console.log(url)
+      // return <Redirect from="/login" to=''></Redirect>
     }
     return (
       <section className="col-md-5 container border border-dark">
@@ -85,4 +95,12 @@ class Login extends React.Component<IProps, IState>{
   }
 }
 
-export default Login;
+const mapStateToProps = (state:any) => ({
+  enter: state.enter,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  checkData: () => dispatch(Creators.loading())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -63,12 +63,13 @@ const success = (state = INITIAL_STATE, action: number) => (
   }
 );
 
-const loading = (state = INITIAL_STATE) => (
-  {
+const loading = (state = INITIAL_STATE) => {
+  console.log('loading')
+  return {
     ...state,
     isloading: true,
   }
-);
+};
 
 const failure = (state = INITIAL_STATE) => (
   {
