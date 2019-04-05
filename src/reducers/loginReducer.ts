@@ -1,10 +1,11 @@
 import { AnyAction } from 'redux';
 import { createReducer, createActions } from 'reduxsauce';
+import { actionChannel } from 'redux-saga/effects';
 
 interface ITypes {
   SUCCESS: 'SUCCESS';
   FAILURE: 'FAILURE';
-  LOADING: 'LOADING';
+  LOAD: 'LOAD';
 }
 
 interface ISuccess extends AnyAction {
@@ -12,71 +13,88 @@ interface ISuccess extends AnyAction {
   id: number;
 } 
 
-interface ILoading extends AnyAction {
-  type: ITypes['LOADING'];
-  payload: {}
+interface ILoad extends AnyAction {
+  type: ITypes['LOAD'];
+  data: {
+    email: string;
+    password: string;
+  }
 } 
 
 interface IFailure extends AnyAction {
   type: ITypes['FAILURE'];
-  payload: {}
+  error: string;
 }
 
 interface IActions {
   success (id: number): ISuccess;
-  loading (): ILoading;
-  failure (): IFailure;
+  load (data:any): ILoad;
+  failure (error: string): IFailure;
 }
 
 export const { Types, Creators } = createActions<IActions, ITypes>({
   success: ['id'],
-  loading: null,
-  failure: null,
+  load: ['data'],
+  failure: ['error'],
 });
 
 // unused
-interface IHandlers {
-  [Types.SUCCESS]: object,
-  [Types.FAILURE]: object,
-  [Types.LOADING]: object,
-}
+// interface IHandlers {
+//   [Types.SUCCESS]: object,
+//   [Types.FAILURE]: object,
+//   [Types.LOAD]: object,
+// }
 
 interface IState {
-  isLoading: boolean;
+  isloading: boolean;
   authorised: boolean;
   failure: boolean;
   id: number;
+  error: string;
 }
 
 const INITIAL_STATE: IState = {
-  isLoading: false,
+  isloading: false,
   authorised: false,
   failure: false,
   id: 0,
+  error: '',
 };
 
-const success = (state = INITIAL_STATE, action: number) => (
-  {
+const success = (state = INITIAL_STATE, action: any) => {
+  console.log(action)
+  return {
     ...state,
     authorised: true,
-    id: action,
+    isloading: false,
+    id: action.id,
   }
-);
+};
 
-const loading = (state = INITIAL_STATE) => {
-  console.log('loading')
+// interface IAction {
+//   email: string;
+//   password: string;
+// }
+
+const load = (state = INITIAL_STATE, action:any) => {
+  console.log(action)
   return {
     ...state,
     isloading: true,
+    email: action.data.email,
+    password: action.data.password,
   }
 };
 
-const failure = (state = INITIAL_STATE) => (
-  {
+const failure = (state = INITIAL_STATE, action: string) => {
+  console.log(action)
+  return {
     ...state,
+    isloading: false,
     failure: true,
+    error: action
   }
-);
+};
 
 // export const HANDLERS:IHandlers = {
 //   [Types.SUCCESS]: success,
@@ -87,7 +105,7 @@ const failure = (state = INITIAL_STATE) => (
 export const HANDLERS:any = {
   [Types.SUCCESS]: success,
   [Types.FAILURE]: failure,
-  [Types.LOADING]: loading,
+  [Types.LOAD]: load,
 };
 
 const LoginReducer = createReducer(INITIAL_STATE, HANDLERS);

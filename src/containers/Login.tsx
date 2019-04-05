@@ -18,6 +18,7 @@ interface IProps {
 interface IState {
   email: string;
   password: string;
+  flag: string;
   [x: string]: string; 
 };
 
@@ -29,12 +30,17 @@ class Login extends React.Component<IProps, IState>{
   state: IState = {
     email: '',
     password: '',
+    flag: 'patient',
   }
   
   public sendForm = (e: React.FormEvent<HTMLFormElement>):void=> {
     e.preventDefault();
     const { checkData } = this.props
-    checkData();
+    const { email, password } = this.state;
+    checkData({
+      email,
+      password,
+    });
   }
 
   public handleUserInput = (e: React.FormEvent<HTMLInputElement>):void => {
@@ -46,10 +52,13 @@ class Login extends React.Component<IProps, IState>{
   public render() {
     const { email, password } = this.state;
     const { authorised, id, isloading} = this.props.enter;
-    console.log(authorised, id, isloading);
+    console.log(this.props)
+    // console.log(authorised, id, isloading);
     if (authorised) {
-      const url = `/patient/${uuidv4()}${id}`;
-      console.log(url)
+      console.log(id)
+      console.log(uuidv4())
+      // const url = `/patient/${uuidv4()}${id}`;
+      // console.log(url)
       // return <Redirect from="/login" to=''></Redirect>
     }
     return (
@@ -95,12 +104,17 @@ class Login extends React.Component<IProps, IState>{
   }
 }
 
+interface IData {
+  email: string;
+  passsword: string;
+}
+
 const mapStateToProps = (state:any) => ({
   enter: state.enter,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  checkData: () => dispatch(Creators.loading())
+  checkData: (data:IData) => dispatch(Creators.load(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

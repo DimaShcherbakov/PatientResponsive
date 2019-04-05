@@ -15,8 +15,6 @@ const store = createStore(
   applyMiddleware(...middleware)
 );
 
-store.dispatch({ type: 'Hello', });
-
 sagaMiddleware.run(saga);
 
 export default store;
