@@ -6,7 +6,7 @@ class Main extends React.Component {
     const cardsTitles = ['Профиль', 'Статистика', 'Уведомления', 'Связаться']
     return(
       <>
-        { cardsTitles.map((el, i) => <Card></Card>) }
+        { cardsTitles.map((el, i) => <Card title={el}></Card>) }
       </>
     )
   }
