@@ -7,6 +7,7 @@ import uuidv4 from 'uuid/v4';
 interface IEnter {
   authorised: boolean;
   isloading: boolean;
+  error: string;
   id: number;
 }
 
@@ -51,15 +52,10 @@ class Login extends React.Component<IProps, IState>{
 
   public render() {
     const { email, password } = this.state;
-    const { authorised, id, isloading} = this.props.enter;
-    console.log(this.props)
-    // console.log(authorised, id, isloading);
+    const { authorised, id, error } = this.props.enter;
     if (authorised) {
-      console.log(id)
-      console.log(uuidv4())
-      // const url = `/patient/${uuidv4()}${id}`;
-      // console.log(url)
-      // return <Redirect from="/login" to=''></Redirect>
+      const url = `/patient/${uuidv4()}/${id}`;
+      return <Redirect from="/login" to={url}></Redirect>
     }
     return (
       <section className="col-md-5 container border border-dark">
@@ -98,6 +94,7 @@ class Login extends React.Component<IProps, IState>{
           >
             Submit
           </button>
+          <span>{ authorised ? (error) : (error) }</span>
         </form>
       </section>
     )

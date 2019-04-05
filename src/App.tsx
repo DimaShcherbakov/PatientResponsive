@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import './App.css';
+import './styles/App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="container wrap">
-        <Redirect from="/" to="/login" />
+        <Redirect from="/login" to="/patient/12/1"></Redirect>
       </div>
     );
   }

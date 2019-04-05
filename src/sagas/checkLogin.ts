@@ -1,4 +1,4 @@
-import { takeEvery, select, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
 import { Types, Creators } from '../reducers/loginReducer';
 import { checkData  } from '../queries/index';
 
@@ -8,17 +8,15 @@ function* handleLoading(action:any):IterableIterator<any> {
   try {
     const loginInfo = action.data;
     const data = yield call(checkData, loginInfo);
-    console.log(data.id)
-    yield put(Creators.success(data.id))
+    console.log(data.id);
+    yield put(Creators.success(data.id));
   } catch(err) {
-    put(Creators.failure(err))
-    console.log(err)
+    yield put(Creators.failure(err.toString()));
   }
-  
 }
 
 function* watchData():IterableIterator<any> {
-  yield takeEvery(LOAD, handleLoading)
+  yield takeEvery(LOAD, handleLoading);
 }
 
 export default watchData;

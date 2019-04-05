@@ -1,6 +1,5 @@
 import { AnyAction } from 'redux';
 import { createReducer, createActions } from 'reduxsauce';
-import { actionChannel } from 'redux-saga/effects';
 
 interface ITypes {
   SUCCESS: 'SUCCESS';
@@ -81,18 +80,16 @@ const load = (state = INITIAL_STATE, action:any) => {
   return {
     ...state,
     isloading: true,
-    email: action.data.email,
-    password: action.data.password,
   }
 };
 
-const failure = (state = INITIAL_STATE, action: string) => {
+const failure = (state = INITIAL_STATE, action: any) => {
   console.log(action)
   return {
     ...state,
     isloading: false,
     failure: true,
-    error: action
+    error: action.error
   }
 };
 
