@@ -8,8 +8,12 @@ function* handleLoading(action:any):IterableIterator<any> {
   try {
     const loginInfo = action.data;
     const data = yield call(checkData, loginInfo);
-    console.log(data.id);
-    yield put(Creators.success(data.id));
+    yield put(Creators.success(
+      data.id,
+      data.firstName,
+      data.lastName,
+      data.thirdName,
+    ));
   } catch(err) {
     yield put(Creators.failure(err.toString()));
   }

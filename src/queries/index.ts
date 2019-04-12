@@ -6,7 +6,6 @@ interface IData{
 }
 
 export const checkData = async (data:IData) => {
-  console.log(data)
   try {
     const res = await axios.post('/patient/login', {
       email: data.email,

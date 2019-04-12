@@ -26,13 +26,18 @@ interface IFailure extends AnyAction {
 }
 
 interface IActions {
-  success (id: number): ISuccess;
+  success (
+    id: number,
+    firstName: string,
+    lastName: string,
+    thirdName: string
+  ): ISuccess;
   load (data:any): ILoad;
   failure (error: string): IFailure;
 }
 
 export const { Types, Creators } = createActions<IActions, ITypes>({
-  success: ['id'],
+  success: ['id', 'firstName', 'lastName', 'thirdName'],
   load: ['data'],
   failure: ['error'],
 });
@@ -50,6 +55,9 @@ interface IState {
   failure: boolean;
   id: number;
   error: string;
+  firstName: string;
+  lastName: string;
+  thirdName: string;
 }
 
 const INITIAL_STATE: IState = {
@@ -58,15 +66,20 @@ const INITIAL_STATE: IState = {
   failure: false,
   id: 0,
   error: '',
+  firstName: '',
+  lastName: '',
+  thirdName: '',
 };
 
 const success = (state = INITIAL_STATE, action: any) => {
-  console.log(action)
   return {
     ...state,
     authorised: true,
     isloading: false,
     id: action.id,
+    firstName: action.firstName,
+    lastName: action.lastName,
+    thirdName: action.thirdName,
   }
 };
 
@@ -76,7 +89,6 @@ const success = (state = INITIAL_STATE, action: any) => {
 // }
 
 const load = (state = INITIAL_STATE, action:any) => {
-  console.log(action)
   return {
     ...state,
     isloading: true,
@@ -84,7 +96,6 @@ const load = (state = INITIAL_STATE, action:any) => {
 };
 
 const failure = (state = INITIAL_STATE, action: any) => {
-  console.log(action)
   return {
     ...state,
     isloading: false,

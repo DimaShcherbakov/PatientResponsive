@@ -6,7 +6,7 @@ class App extends Component {
   render() {
     return (
       <div className="container wrap">
-        <Redirect from="/login" to="/patient/12/1"></Redirect>
+        <Redirect from="/" to="/patient/1/stat"></Redirect>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { Creators } from '../reducers/loginReducer';
-import uuidv4 from 'uuid/v4';
+// import uuidv4 from 'uuid/v4';
 
 interface IEnter {
   authorised: boolean;
@@ -54,7 +54,8 @@ class Login extends React.Component<IProps, IState>{
     const { email, password } = this.state;
     const { authorised, id, error } = this.props.enter;
     if (authorised) {
-      const url = `/patient/${uuidv4()}/${id}`;
+      localStorage.id = id;
+      const url = `/patient/${id}`;
       return <Redirect from="/login" to={url}></Redirect>
     }
     return (
