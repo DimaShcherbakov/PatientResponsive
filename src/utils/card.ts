@@ -17,10 +17,3 @@ class CardBody {
 };
 
 export default CardBody;
-
-
-
-// function Card(title: string, path: string) {
-//   this.title = title;
-//   this.path = path;
-// }

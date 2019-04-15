@@ -39,6 +39,7 @@ class Main extends React.Component<IProps, IState>{
       </>
     )
   }
+  
   public render () {
     const { firstName, lastName, thirdName } = this.props.enter;
     return(
