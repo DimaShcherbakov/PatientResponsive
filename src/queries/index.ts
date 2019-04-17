@@ -1,13 +1,17 @@
 import axios from '../utils/axios';
 
-interface IData{
+interface IData {
   email: string;
   password: string;
 }
 
-interface IDatas{
-  email: string;
-  password: string;
+interface IDatas {
+  id: number;
+  time: string;
+  date: string;
+  state: string;
+  note: string;
+  pill: string;
 }
 
 export const checkData = async (data:IData) => {

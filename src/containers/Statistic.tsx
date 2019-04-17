@@ -1,72 +1,41 @@
 import React from 'react';
 import Table from '../components/Table';
+import normalDate from '../utils/date';
+import Form from './Form';
+import { Redirect } from 'react-router-dom';
 
-interface IState{
-  time: string;
-  note: string;
-  pill: string;
-  state: string;
+interface IState {
+  redir: boolean;
 }
 
-interface IProps{
-
-}
-
-class Statistic extends React.Component<IState, IProps>{
-  state = {}
-  
-  public handleUserInput = (e: React.FormEvent<HTMLInputElement>):void => {
-    const { name } = e.currentTarget;
-    const { value } = e.currentTarget;
-    this.setState({ [name]: value });
+class Statistic extends React.Component<IState>{
+  state = {
+    redir: false,
   }
-
-  public handleSelectInput = (e: React.FormEvent<HTMLSelectElement>):void => {
-    const { name } = e.currentTarget;
-    const { value } = e.currentTarget;
-    this.setState({ [name]: value });
+  
+  public redirection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    this.setState({ redir: true })
   }
 
   public render() {
-    console.log(this.state)
+    const { redir } = this.state;
+    if (redir) {
+      const url = `/patient/${localStorage.id}/stat`;
+      const to = `/patient/${localStorage.id}`;
+      return <Redirect from={ url } to={ to }/>
+    }
     return (
       <div className="container border col-sm-6 d-flex flex-column">
-        <div className="text-center border my-3">{ "Stat" }</div>
+        <div
+          className="link-back"
+          onClick={ this.redirection }
+        >
+          <i className="fas fa-arrow-left"></i>
+        </div>
+        <div className="text-center border my-3">{ "Statistic" }</div>
+        <p>{ normalDate() }</p>
         <div className="text-center border my-3 flex-wrap">
-          <form action="" className="my-3 px-1">
-            <div className="justify-content-around d-flex">
-              <input
-                type="time"
-                name="time"
-                onChange={this.handleUserInput}
-              />
-              <input
-                type="text"
-                name="pill"
-                onChange={this.handleUserInput}
-                placeholder="Препарат"
-              />
-              <select
-                name="state"
-                onChange={this.handleSelectInput}
-              >
-                <option value="Choose state">Choose state</option>
-                <option value="Хорошо">Хорошо</option>
-                <option value="Удовл">Удовл.</option>
-                <option value="Плохо">Плохо</option>
-                <option value="Ужасное">Ужасное</option>
-              </select>
-            </div>
-            <p className="my-3">
-              <input 
-                type="text"
-                name="note"
-                className="col-sm-11"
-                onChange={this.handleUserInput}
-              />
-            </p>
-            <input type="submit" />
-          </form>
+          <Form />
         </div>
         <Table />
       </div>

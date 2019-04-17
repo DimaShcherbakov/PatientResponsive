@@ -2,38 +2,53 @@ import { AnyAction } from 'redux';
 import { createReducer, createActions } from 'reduxsauce';
 
 interface ITypes {
-  SUCCESS: 'SUCCESS';
-  FAILURE: 'FAILURE';
-  LOAD: 'LOAD';
+  SUCCESS_DATA: 'SUCCESS_DATA';
+  LOAD_DATA: 'LOAD_DATA';
+  GET_DATA: 'GET_DATA';
 }
 
 interface ISuccess extends AnyAction {
-  type: ITypes['SUCCESS'];
-} 
+  type: ITypes['SUCCESS_DATA'];
+  data: {
+    time: string;
+    state: string;
+    note: string;
+    pill: string;
+  }
+}
 
 interface ILoad extends AnyAction {
-  type: ITypes['LOAD'];
+  type: ITypes['LOAD_DATA'];
   data: {
-    email: string;
-    password: string;
+    id: number;
+    date: string;
+    time: string;
+    state: string;
+    note: string;
+    pill: string;
   }
-} 
+}
 
-interface IFailure extends AnyAction {
-  type: ITypes['FAILURE'];
-  error: string;
+interface IGet extends AnyAction {
+  type: ITypes['GET_DATA'];
+  data: {
+    time: string;
+    state: string;
+    note: string;
+    pill: string;
+  }[]
 }
 
 interface IActions {
-  success(): ISuccess;
-  load (data:any): ILoad;
-  failure (error: string): IFailure;
+  success_data (data:any): ISuccess;
+  load_data (data:any): ILoad;
+  get_data (data: any): IGet;
 }
 
-export const { Types, Creators } = createActions<IActions, ITypes>({
-  success: [],
-  load: ['data'],
-  failure: ['error'],
+export const { Types, Creators } = createActions< IActions, ITypes>({
+  success_data: ['data'],
+  load_data: ['data'],
+  get_data: ['data']
 });
 
 // unused
@@ -44,57 +59,42 @@ export const { Types, Creators } = createActions<IActions, ITypes>({
 // }
 
 interface IState {
-  isloading: boolean;
-  authorised: boolean;
-  failure: boolean;
-  id: number;
-  error: string;
-  firstName: string;
-  lastName: string;
-  thirdName: string;
+  success: boolean;
+  loading: boolean;
+  dataArr: {
+    time: string;
+    state: string;
+    note: string;
+    pill: string;
+  }[],
 }
 
 const INITIAL_STATE: IState = {
-  isloading: false,
-  authorised: false,
-  failure: false,
-  id: 0,
-  error: '',
-  firstName: '',
-  lastName: '',
-  thirdName: '',
+  success: false,
+  loading: false,
+  dataArr: [],
 };
 
 const success = (state = INITIAL_STATE, action: any) => {
+  console.log(action)
   return {
     ...state,
-    authorised: true,
-    isloading: false,
-    id: action.id,
-    firstName: action.firstName,
-    lastName: action.lastName,
-    thirdName: action.thirdName,
+    success: true,
+    dataArr: [...state.dataArr, action.data]
   }
 };
-
-// interface IAction {
-//   email: string;
-//   password: string;
-// }
 
 const load = (state = INITIAL_STATE, action:any) => {
   return {
     ...state,
-    isloading: true,
+    loading: true,
   }
 };
 
-const failure = (state = INITIAL_STATE, action: any) => {
+const loadData = (state = INITIAL_STATE, action:any) => {
   return {
     ...state,
-    isloading: false,
-    failure: true,
-    error: action.error
+    dataArr: action.data,
   }
 };
 
@@ -105,11 +105,11 @@ const failure = (state = INITIAL_STATE, action: any) => {
 // };
 
 export const HANDLERS:any = {
-  [Types.SUCCESS]: success,
-  [Types.FAILURE]: failure,
-  [Types.LOAD]: load,
+  [Types.SUCCESS_DATA]: success,
+  [Types.LOAD_DATA]: load,
+  [Types.GET_DATA]: loadData,
 };
 
-const LoginReducer = createReducer(INITIAL_STATE, HANDLERS);
+const noteReducer = createReducer(INITIAL_STATE, HANDLERS);
 
-export default LoginReducer;
+export default noteReducer;

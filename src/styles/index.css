@@ -30,3 +30,28 @@ body {
   height: 100%;
   padding: 0;
 }
+
+.link-back{
+  position: absolute;
+  top: -24px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: gray;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  flex-direction:column;
+}
+.link-back:hover{
+  cursor: pointer;
+  background-color: lightgray;
+}
+.ava-wrap{
+  width: 200px;
+  height: 200px;
+}
+.link-back svg {
+  margin: 0 auto;
+}
